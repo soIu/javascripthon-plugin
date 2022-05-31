@@ -1,0 +1,33 @@
+{
+  "name": "babel-plugin-python",
+  "version": "1.0.0",
+  "description": "Load Python (Javascripthon) code in babel, supports requiring from and to JS/TS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soIu/javascripthon-plugin"
+  },
+  "keywords": [
+    "transcrypt",
+    "python",
+    "transpiler",
+    "loader"
+  ],
+  "author": "Solu Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/soIu/transcrypt-plugin/issues"
+  },
+  "homepage": "https://github.com/soIu/transcrypt-plugin#readme",
+  "dependencies": {
+    "proper-lockfile": "^4.1.2",
+    "temp": "^0.9.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "babel-loader": "^8.2.2"
+  }
+}
