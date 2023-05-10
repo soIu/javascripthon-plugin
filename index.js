@@ -35,6 +35,8 @@ const openSync = (options) => {
 
 const getTemp = (rootPath) => {
   if (tempCache) return tempCache;
+  rootPath = require('path').join(rootPath, '__pycache__');
+  if (!require('fs').existsSync(rootPath)) require('fs').mkdirSync(rootPath);
   tempCache = [require('temp').track()];
   tempDir = tempCache[0].mkdirSync({dir: rootPath, prefix: 'python-cache-'});
   tempCache[1] = openSync({dir: tempDir, suffix: '.js'}).path;

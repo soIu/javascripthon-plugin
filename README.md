@@ -47,6 +47,6 @@ module.exports = [some_function, SomeClass(), SomeClass.some_class_property, Som
 
 We choose to make this module a babel plugin instead of a webpack loader because we want to target bundlers as much as possible. Unfortunately making this plugin to be compatible to all bundler forces us to make some sacrifices:
 
-- Because most bundlers ignore loading files outside of project directory to babel loader and sometimes ignore them too in node_modules, there will be some `python-cache-*` folders that are created on project root during transpilation.
-- Not only the most compatible location is on project root, but metro bundler seems to be a bitch in handling files/folders that have a dot at the start of the name. So the `python-cache-*` folders can't be hidden with dot (unix).
-- Fortunately these folders will only appear at transpilation. This doesn't have major effects when building for production, but at development (watch mode) the folders will be there until you stop the dev server. Feel free to add `python-cache-*` to .gitignore to prevent acidentally adding them to your commits.
+- Because most bundlers ignore loading files outside of project directory to babel loader and sometimes ignore them too in node_modules, there will be some `__pycache__/python-cache-*` folders that are created on project root during transpilation.
+- Not only the most compatible location is on project root, but metro bundler seems to be a bitch in handling files/folders that have a dot at the start of the name. So the `__pycache__/python-cache-*` folders can't be hidden with dot (unix).
+- Fortunately these folders will only appear at transpilation. This doesn't have major effects when building for production, but at development (watch mode) the folders will be there until you stop the dev server. Feel free to add `__pycache__` to .gitignore (just like standard Python project .gitignore) to prevent acidentally adding them to your commits.

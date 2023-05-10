@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-python",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Load Python (Javascripthon) code in babel, supports requiring from and to JS/TS.",
   "main": "index.js",
   "scripts": {
