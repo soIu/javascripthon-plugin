@@ -6,6 +6,19 @@ let tempDir;
 //const moduleCache = {};
 //const transpiledCache = {};
 
+const compile = require('node-syncify').build(require.resolve('./compile.js'));
+
+function compilePy(cwd, source, destination) {
+  process.chdir(cwd);
+  try {
+    compile(cwd, source, destination);
+    return {};
+  }
+  catch (error) {
+    return {stderr: error};
+  }
+}
+
 function replace_dot(item, index, array) {
   if (index === 0) return item;
   else if (array.length === (index + 1)) return '-' + item;
@@ -82,7 +95,9 @@ const applyTransform = (p, t, state, value, calleeName, moduleString) => {
   const tempPath = openSync({dir: tempDir, suffix: '.js'}).path
   //const newTempPath = openSync({dir: tempDir, suffix: '.js'}).path
   //let python_code = require('fs').readFileSync(fullPath).toString()
-  const out = require('child_process').spawnSync('python3' , ['-m', 'metapensiero.pj', fullPath, '-o', tempPath])
+  const below_14 = parseInt(process.version.split('.')[0].slice(1)) < 14;
+  if (!below_14) require('fs').copyFileSync(fullPath, require('path').join(tempDir, require('path').basename(fullPath)));
+  const out = below_14 ? require('child_process').spawnSync('python3' , ['-m', 'metapensiero.pj', fullPath, '-o', tempPath]) : compilePy(tempDir, require('path').basename(fullPath), require('path').basename(tempPath))
   if (out.stderr && out.stderr.toString()) {
     throw /*new Error*/p.buildCodeFrameError('Failed to transpile ' + fullPath + '\n' + out.stderr.toString());
   }
@@ -100,7 +115,9 @@ const applyTransform = (p, t, state, value, calleeName, moduleString) => {
       console.log('\n' + fullPath + ' changes, recompiling...\n')
       //let python_code = require('fs').readFileSync(fullPath).toString()
       //const out = require('child_process').spawnSync(process.execPath , [join(require.resolve('rapydscript-ng'), '../../bin/rapydscript'), 'compile', '-m',  '-o',  newTempPath], {input: python_code})
-      const out = require('child_process').spawnSync('python3' , ['-m', 'metapensiero.pj', fullPath, '-o', tempPath])
+      const below_14 = parseInt(process.version.split('.')[0].slice(1)) < 14;
+      if (!below_14) require('fs').copyFileSync(fullPath, require('path').join(tempDir, require('path').basename(fullPath)));
+      const out = below_14 ? require('child_process').spawnSync('python3' , ['-m', 'metapensiero.pj', fullPath, '-o', tempPath]) : compilePy(tempDir, require('path').basename(fullPath), require('path').basename(tempPath))
       if (out.stderr && out.stderr.toString()) throw new Error(out.stderr.toString());
       /*code = require('fs').readFileSync(newTempPath).toString();
       code = 'require("' + tempFile + '")(module, module.exports, function (' + module_variables + ') {\n' + code + '\n});'
