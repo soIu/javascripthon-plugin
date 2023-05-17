@@ -1,4 +1,4 @@
-const { dirname, extname, resolve, join } = require('path')
+const { dirname, extname, resolve, join, relative } = require('path')
 
 let tempCache;
 let tempDir;
@@ -90,7 +90,7 @@ const applyTransform = (p, t, state, value, calleeName, moduleString) => {
     if (transpiledCache[state.file.opts.filename] && (ext || value.startsWith('.'))) moduleString.replaceWith(t.StringLiteral(filePath))
     return
   }
-  if (moduleCache[filePath]) return moduleString.replaceWith(t.StringLiteral(moduleCache[filePath]))
+  if (moduleCache[filePath]) return moduleString.replaceWith(t.StringLiteral(relative(scriptDirectory, moduleCache[filePath])))
   const fullPath = filePath
   let [temp, tempFile] = getTemp(rootPath)
   if (process.platform === 'win32') tempFile = tempFile.split('\\').join('\\\\');
@@ -106,7 +106,7 @@ const applyTransform = (p, t, state, value, calleeName, moduleString) => {
   /*let code = require('fs').readFileSync(tempPath);
   code = 'require("' + tempFile + '")(module, module.exports, function (' + module_variables + ') {\n' + code + '\n});'
   require('fs').writeFileSync(tempPath, code)*/
-  moduleString.replaceWith(t.StringLiteral(tempPath))
+  moduleString.replaceWith(t.StringLiteral(relative(scriptDirectory, tempPath)))
   //moduleCache[fullPath] = tempPath
   appendModule(fullPath, tempPath);
   //transpiledCache[/*(process.platform === 'darwin' ? '/private' : '') +*/ tempPath] = fullPath
