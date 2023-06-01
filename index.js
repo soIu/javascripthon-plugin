@@ -1,4 +1,10 @@
-const { dirname, extname, resolve, join, relative } = require('path')
+const { dirname, extname, resolve, join } = require('path').posix
+
+function relative(...args) {
+  const value = require('path').posix.relative(...args);
+  if (!value.startsWith('.')) return './' + value;
+  return value;
+}
 
 let tempCache;
 let tempDir;
@@ -86,11 +92,12 @@ const applyTransform = (p, t, state, value, calleeName, moduleString) => {
   const [transpiledCache, moduleCache] = getCache(rootPath);
   const scriptDirectory = dirname(resolve(transpiledCache[state.file.opts.filename] || state.file.opts.filename))
   const filePath = resolve(scriptDirectory, value)
-  if (ext !== '.py' && ext !== '.pyj') {
+  if (ext !== '.py') {
     if (transpiledCache[state.file.opts.filename] && (ext || value.startsWith('.'))) moduleString.replaceWith(t.StringLiteral(filePath))
     return
   }
-  if (moduleCache[filePath]) return moduleString.replaceWith(t.StringLiteral(relative(scriptDirectory, moduleCache[filePath])))
+  //if (moduleCache[filePath]) return moduleString.replaceWith(t.StringLiteral(relative(scriptDirectory, moduleCache[filePath])))
+  if (moduleCache[filePath]) return moduleString.replaceWith(t.StringLiteral(relative(dirname(resolve(state.file.opts.filename)), moduleCache[filePath])))
   const fullPath = filePath
   let [temp, tempFile] = getTemp(rootPath)
   if (process.platform === 'win32') tempFile = tempFile.split('\\').join('\\\\');
@@ -106,7 +113,7 @@ const applyTransform = (p, t, state, value, calleeName, moduleString) => {
   /*let code = require('fs').readFileSync(tempPath);
   code = 'require("' + tempFile + '")(module, module.exports, function (' + module_variables + ') {\n' + code + '\n});'
   require('fs').writeFileSync(tempPath, code)*/
-  moduleString.replaceWith(t.StringLiteral(relative(scriptDirectory, tempPath)))
+  moduleString.replaceWith(t.StringLiteral(relative(dirname(resolve(state.file.opts.filename)), tempPath)))
   //moduleCache[fullPath] = tempPath
   appendModule(fullPath, tempPath);
   //transpiledCache[/*(process.platform === 'darwin' ? '/private' : '') +*/ tempPath] = fullPath
