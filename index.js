@@ -97,7 +97,7 @@ const applyTransform = (p, t, state, value, calleeName, moduleString) => {
     return
   }
   //if (moduleCache[filePath]) return moduleString.replaceWith(t.StringLiteral(relative(scriptDirectory, moduleCache[filePath])))
-  if (moduleCache[filePath]) return moduleString.replaceWith(t.StringLiteral(relative(dirname(resolve(state.file.opts.filename)), moduleCache[filePath])))
+  if (moduleCache[filePath]) return moduleString.replaceWith(t.StringLiteral(relative(scriptDirectory, moduleCache[filePath])))
   const fullPath = filePath
   let [temp, tempFile] = getTemp(rootPath)
   if (process.platform === 'win32') tempFile = tempFile.split('\\').join('\\\\');
