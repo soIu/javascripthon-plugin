@@ -96,8 +96,10 @@ const applyTransform = (p, t, state, value, calleeName, moduleString) => {
     if (transpiledCache[state.file.opts.filename] && (ext || value.startsWith('.'))) moduleString.replaceWith(t.StringLiteral(filePath))
     return
   }
+  const currentDirectory = transpiledCache[state.file.opts.filename] ? dirname(resolve(state.file.opts.filename)) : scriptDirectory;
+  //if (moduleCache[filePath]) return moduleString.replaceWith(t.StringLiteral(relative(dirname(resolve(state.file.opts.filename)), moduleCache[filePath])))
   //if (moduleCache[filePath]) return moduleString.replaceWith(t.StringLiteral(relative(scriptDirectory, moduleCache[filePath])))
-  if (moduleCache[filePath]) return moduleString.replaceWith(t.StringLiteral(relative(scriptDirectory, moduleCache[filePath])))
+  if (moduleCache[filePath]) return moduleString.replaceWith(t.StringLiteral(relative(currentDirectory, moduleCache[filePath])))
   const fullPath = filePath
   let [temp, tempFile] = getTemp(rootPath)
   if (process.platform === 'win32') tempFile = tempFile.split('\\').join('\\\\');
