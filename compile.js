@@ -19,8 +19,8 @@ async function load(cwd) {
 module.exports = async function compile(cwd, source, destination) {
   try {
     await load(cwd);
-    pyodide.globals.set('source', require('path').join('/mnt', source));
-    pyodide.globals.set('destination', require('path').join('/mnt', destination));
+    pyodide.globals.set('source', require('path').posix.join('/mnt', source));
+    pyodide.globals.set('destination', require('path').posix.join('/mnt', destination));
     pyodide.runPython(script);
   }
   catch (error) {

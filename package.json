@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-python",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Load Python (Javascripthon) code in babel, supports requiring from and to JS/TS.",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   "homepage": "https://github.com/soIu/javascripthon-plugin#readme",
   "dependencies": {
     "node-fetch": "^2.6.11",
-    "node-syncify": "^1.0.1",
+    "node-syncify": "^1.0.2",
     "proper-lockfile": "^4.1.2",
     "pyodide": "^0.23.2",
     "temp": "^0.9.4"
