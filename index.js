@@ -1,7 +1,8 @@
-const { dirname, extname, resolve, join } = require('path').posix
+const { dirname, extname, resolve, join } = require('path')
 
 function relative(...args) {
-  const value = require('path').posix.relative(...args);
+  let value = require('path').relative(...args);
+  value = value.split(require('path').sep).join(require('path').posix.sep);
   if (!value.startsWith('.')) return './' + value;
   return value;
 }
