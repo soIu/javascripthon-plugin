@@ -94,7 +94,7 @@ const applyTransform = (p, t, state, value, calleeName, moduleString) => {
   const scriptDirectory = dirname(resolve(transpiledCache[state.file.opts.filename] || state.file.opts.filename))
   const filePath = resolve(scriptDirectory, value)
   if (ext !== '.py') {
-    if (transpiledCache[state.file.opts.filename] && (ext || value.startsWith('.'))) moduleString.replaceWith(t.StringLiteral(filePath))
+    if (transpiledCache[state.file.opts.filename] && (value.startsWith('.'))) moduleString.replaceWith(t.StringLiteral(filePath))
     return
   }
   const currentDirectory = transpiledCache[state.file.opts.filename] ? dirname(resolve(state.file.opts.filename)) : scriptDirectory;
