@@ -113,7 +113,7 @@ const applyTransform = (p, t, state, value, calleeName, moduleString) => {
   if (out.stderr && out.stderr.toString()) {
     throw /*new Error*/p.buildCodeFrameError('Failed to transpile ' + fullPath + '\n' + out.stderr.toString());
   }
-  require('fs').writeFileSync(tempPath, require('fs').readFileSync(tempPath).toString().replace(/    var /g, '    let '));
+  //require('fs').writeFileSync(tempPath, require('fs').readFileSync(tempPath).toString().replace(/    var /g, '    let '));
   /*let code = require('fs').readFileSync(tempPath);
   code = 'require("' + tempFile + '")(module, module.exports, function (' + module_variables + ') {\n' + code + '\n});'
   require('fs').writeFileSync(tempPath, code)*/
@@ -132,7 +132,7 @@ const applyTransform = (p, t, state, value, calleeName, moduleString) => {
       if (!below_14) require('fs').copyFileSync(fullPath, require('path').join(tempDir, require('path').basename(fullPath)));
       const out = below_14 ? require('child_process').spawnSync('python3' , ['-m', 'metapensiero.pj', fullPath, '-o', tempPath]) : compilePy(tempDir, require('path').basename(fullPath), require('path').basename(tempPath))
       if (out.stderr && out.stderr.toString()) throw new Error(out.stderr.toString());
-      require('fs').writeFileSync(tempPath, require('fs').readFileSync(tempPath).toString().replace(/    var /g, '    let '));
+      //require('fs').writeFileSync(tempPath, require('fs').readFileSync(tempPath).toString().replace(/    var /g, '    let '));
       /*code = require('fs').readFileSync(newTempPath).toString();
       code = 'require("' + tempFile + '")(module, module.exports, function (' + module_variables + ') {\n' + code + '\n});'
       require('fs').writeFileSync(tempPath, code)*/
