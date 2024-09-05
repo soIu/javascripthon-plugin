@@ -87,10 +87,11 @@ const getCache = (rootPath) => {
 const defaultOptions = {}
 
 const applyTransform = (p, t, state, value, calleeName, moduleString) => {
-  const ext = extname(value)
   const options = Object.assign({}, defaultOptions, state.opts)
   const rootPath = state.file.opts.sourceRoot || process.cwd()
   const [transpiledCache, moduleCache] = getCache(rootPath);
+  if (resolve(dirname(resolve(state.file.opts.filename)), value) in transpiledCache) value = transpiledCache[resolve(dirname(resolve(state.file.opts.filename)), value)];
+  const ext = extname(value)
   const scriptDirectory = dirname(resolve(transpiledCache[state.file.opts.filename] || state.file.opts.filename))
   const filePath = resolve(scriptDirectory, value)
   if (ext !== '.py') {
